@@ -7,18 +7,18 @@ import sys
 import moment
 from datetime import datetime
 import re
-# import downloadUrlImage
+import downloadImage
 
 
-def searchForTwitterImages_interactive(strIgnore=''):
-    print(f"Interactive mode enabled.{strIgnore}\r\n")
+def searchForTwitterImages_interactive(processDownload=False, strMsgIgnore=''):
+    print(f"** Interactive mode enabled ** .{strMsgIgnore}\r\n")
 
     strQueryString = input('Please enter Twitter search terms:  ')
     arrSearchTerms = strQueryString.split()
-    searchForTwitterImages(arrSearchTerms)
+    searchForTwitterImages(arrSearchTerms, processDownload)
 
 
-def searchForTwitterImages(arrSearchTerms):
+def searchForTwitterImages(arrSearchTerms, processDownload=False):
     url = 'https://twitter.com/search'
     userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
 
@@ -43,6 +43,8 @@ def searchForTwitterImages(arrSearchTerms):
     if iResults > 0:
         fileName = print_image_urls(strQueryString, arrImages)
         print(f"{len(arrImages)} results found and written to {fileName}\r\n")
+        if processDownload:
+            downloadImage.downloadImages(strQueryString, arrImages)
     else:
         print(f"No results found.")
 
